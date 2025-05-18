@@ -1,6 +1,6 @@
 // ChatComponent.jsx
-import { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { useState, useRef, useEffect } from "react";
+import { AirVent, BotIcon, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
@@ -9,9 +9,9 @@ import { Card } from "@/components/ui/card";
 
 const ChatComponent = () => {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom whenever messages change
@@ -20,7 +20,7 @@ const ChatComponent = () => {
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSendMessage = async (e) => {
@@ -28,50 +28,50 @@ const ChatComponent = () => {
     if (!input.trim()) return;
 
     // Add user message
-    const userMessage = { 
-      id: Date.now(), 
-      text: input, 
-      sender: 'user' 
+    const userMessage = {
+      id: Date.now(),
+      text: input,
+      sender: "user",
     };
-    
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
     setIsLoading(true);
 
     try {
       // Replace with your actual API call
-      const response = await fetch('http://localhost:5000/ask', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/ask", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: input }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        throw new Error("Failed to get response");
       }
 
       const data = await response.json();
-      
+
       // Add AI response
-      const aiMessage = { 
-        id: Date.now() + 1, 
-        text: data.message, 
-        sender: 'ai' 
+      const aiMessage = {
+        id: Date.now() + 1,
+        text: data.message,
+        sender: "ai",
       };
-      
-      setMessages(prev => [...prev, aiMessage]);
+
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       // Add error message
-      const errorMessage = { 
-        id: Date.now() + 1, 
-        text: 'Sorry, I encountered an error. Please try again.', 
-        sender: 'ai' 
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: "Sorry, I encountered an error. Please try again.",
+        sender: "ai",
       };
-      
-      setMessages(prev => [...prev, errorMessage]);
+
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -96,27 +96,31 @@ const ChatComponent = () => {
               <div
                 key={message.id}
                 className={`flex ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
+                  message.sender === "user" ? "justify-end" : "justify-start"
                 }`}
               >
                 <div className="flex items-start max-w-xs space-x-2">
-                  {message.sender === 'ai' && (
-                    <Avatar className="w-8 h-8 bg-primary">
-                      <span className="text-xs font-bold text-primary-foreground">AI</span>
+                  {message.sender === "ai" && (
+                    <Avatar className="w-8 h-8 ">
+                      {/* <span className="text-xs font-bold text-primary-foreground">
+                        AI
+                      </span> */}
+                      <BotIcon/>
                     </Avatar>
                   )}
                   <div
                     className={`p-3 rounded-lg ${
-                      message.sender === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-foreground'
+                      message.sender === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-foreground"
                     }`}
                   >
                     {message.text}
                   </div>
-                  {message.sender === 'user' && (
-                    <Avatar className="w-8 h-8 bg-secondary">
-                      <span className="text-xs font-bold text-secondary-foreground">You</span>
+                  {message.sender === "user" && (
+                    <Avatar className="w-8 h-8 ">
+                      <User />
+                      {/* <span className="text-xs font-bold text-secondary-foreground">You</span> */}
                     </Avatar>
                   )}
                 </div>
@@ -125,13 +129,19 @@ const ChatComponent = () => {
             {isLoading && (
               <div className="flex items-start max-w-xs space-x-2">
                 <Avatar className="w-8 h-8 bg-primary">
-                  <span className="text-xs font-bold text-primary-foreground">AI</span>
+                      <User />
                 </Avatar>
                 <div className="p-3 bg-muted text-foreground rounded-lg">
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    <div
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.4s" }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -152,8 +162,8 @@ const ChatComponent = () => {
             className="flex-1"
             disabled={isLoading}
           />
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             size="icon"
             disabled={!input.trim() || isLoading}
             className="shrink-0"
