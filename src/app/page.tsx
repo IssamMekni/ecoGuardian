@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css"; // أنماط Leaflet
 import ChatComponent from "@/components/ChatComponent";
+import MyFoot from "@/app/foot/page";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // تحميل مكون الخريطة بشكل ديناميكي لتجنب مشاكل SSR
 const Map = dynamic(() => import("@/components/Map"), { ssr: false });
@@ -13,17 +15,26 @@ const MapPage = () => {
 
   return (
     <main className="flex items-center justify-center h-screen w-screen">
-      <div className="h-screen w-full grid grid-rows-2 ">
-        <div className="h-full w-full p-2">
-          <div className="w-full h-full">
-            <Map center={center} zoom={zoom} />
+      <Tabs defaultValue="maps" className="h-screen w-screen flex flex-col">
+        <TabsList className="flex w-full">
+          <TabsTrigger value="maps" >maps</TabsTrigger>
+          <TabsTrigger value="foot" >foot print</TabsTrigger>
+        </TabsList>
+        <TabsContent value="foot">
+          <MyFoot />
+        </TabsContent>
+        <TabsContent value="maps" className="h-[80vh] grid grid-rows-2" >
+          <div className="">
+
+          <Map center={center} zoom={zoom} />
           </div>
-        </div>
-        <div className="h-full w-full">
+          <div className="">
 
           <ChatComponent />
-        </div>
-      </div>
+          </div>
+
+        </TabsContent>
+      </Tabs>
     </main>
   );
 };

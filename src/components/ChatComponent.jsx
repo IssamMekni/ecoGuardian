@@ -1,13 +1,21 @@
 // ChatComponent.jsx
 import { useState, useRef, useEffect } from 'react';
+import { Send } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card } from "@/components/ui/card";
 
 const ChatComponent = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom whenever messages change
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -71,77 +79,91 @@ const ChatComponent = () => {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-md mx-auto bg-gray-50">
+    <Card className="flex flex-col h-full max-w-md mx-auto">
       {/* Chat header */}
-      <div className="px-4 py-3 bg-white shadow">
+      <div className="px-4 py-3 border-b">
         <h1 className="text-xl font-semibold text-center">AI Assistant</h1>
       </div>
 
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto">
+      <ScrollArea className="flex-1 p-4">
         {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="flex items-center justify-center h-full text-muted-foreground">
             <p>Start a conversation with the AI</p>
           </div>
         ) : (
-          messages.map((message) => (
-            <div
-              key={message.id}
-              className={`mb-4 max-w-xs md:max-w-md ${
-                message.sender === 'user' ? 'ml-auto' : 'mr-auto'
-              }`}
-            >
+          <div className="space-y-4">
+            {messages.map((message) => (
               <div
-                className={`p-3 rounded-lg ${
-                  message.sender === 'user'
-                    ? 'bg-blue-500 text-white rounded-br-none'
-                    : 'bg-gray-200 text-gray-800 rounded-bl-none'
+                key={message.id}
+                className={`flex ${
+                  message.sender === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
-                {message.text}
+                <div className="flex items-start max-w-xs space-x-2">
+                  {message.sender === 'ai' && (
+                    <Avatar className="w-8 h-8 bg-primary">
+                      <span className="text-xs font-bold text-primary-foreground">AI</span>
+                    </Avatar>
+                  )}
+                  <div
+                    className={`p-3 rounded-lg ${
+                      message.sender === 'user'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-foreground'
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                  {message.sender === 'user' && (
+                    <Avatar className="w-8 h-8 bg-secondary">
+                      <span className="text-xs font-bold text-secondary-foreground">You</span>
+                    </Avatar>
+                  )}
+                </div>
               </div>
-            </div>
-          ))
-        )}
-        {isLoading && (
-          <div className="flex items-center mb-4 max-w-xs">
-            <div className="p-3 bg-gray-200 text-gray-800 rounded-lg rounded-bl-none">
-              <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            ))}
+            {isLoading && (
+              <div className="flex items-start max-w-xs space-x-2">
+                <Avatar className="w-8 h-8 bg-primary">
+                  <span className="text-xs font-bold text-primary-foreground">AI</span>
+                </Avatar>
+                <div className="p-3 bg-muted text-foreground rounded-lg">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
         <div ref={messagesEndRef} />
-      </div>
+      </ScrollArea>
 
       {/* Input area */}
-      <form onSubmit={handleSendMessage} className="p-4 bg-white border-t">
-        <div className="flex rounded-lg border border-gray-300 overflow-hidden">
-          <input
+      <form onSubmit={handleSendMessage} className="p-4 border-t">
+        <div className="flex space-x-2">
+          <Input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 focus:outline-none"
+            className="flex-1"
             disabled={isLoading}
           />
-          <button
-            type="submit"
+          <Button 
+            type="submit" 
+            size="icon"
             disabled={!input.trim() || isLoading}
-            className={`px-4 py-2 font-medium ${
-              !input.trim() || isLoading
-                ? 'bg-gray-300 text-gray-500'
-                : 'bg-blue-500 text-white'
-            }`}
+            className="shrink-0"
           >
-            Send
-          </button>
+            <Send className="w-4 h-4" />
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 };
 
