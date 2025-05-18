@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import 'leaflet/dist/leaflet.css'; // أنماط Leaflet
+import "leaflet/dist/leaflet.css"; // أنماط Leaflet
+import ChatComponent from "@/components/ChatComponent";
 
 // تحميل مكون الخريطة بشكل ديناميكي لتجنب مشاكل SSR
 const Map = dynamic(() => import("@/components/Map"), { ssr: false });
@@ -12,8 +13,13 @@ const MapPage = () => {
 
   return (
     <main className="flex items-center justify-center h-screen w-screen">
-      <div className="h-full w-full">
-        <Map center={center} zoom={zoom} />
+      <div className="h-screen w-full flex ">
+        <div className="h-1/2 w-full p-2">
+          <div className="w-full h-full">
+            <Map center={center} zoom={zoom} />
+          </div>
+          <ChatComponent />
+        </div>
       </div>
     </main>
   );
