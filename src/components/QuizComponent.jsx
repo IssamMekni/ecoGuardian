@@ -10,11 +10,12 @@ const QuizComponent = () => {
   // Sample quiz data - you would replace this with your actual quiz data
   const quizData = {
     quizName: "Geography Quiz",
-    quizQuestion: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    answer: 2, // Index of the correct answer (Paris)
-    moreDescription: "Paris is the capital and most populous city of France. It is located on the Seine River, in the north of the country."
+    quizQuestion: "What is the capital of Algeria?",
+    options: ["Oran", "Constantine", "Algiers", "Annaba"],
+    answer: 2, // Index of the correct answer (Algiers)
+    moreDescription: "Algiers is the capital and largest city of Algeria. Located along the Mediterranean coast, it is an important political, economic, and cultural center."
   };
+  
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);

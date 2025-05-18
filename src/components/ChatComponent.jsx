@@ -40,7 +40,7 @@ const ChatComponent = () => {
 
     try {
       // Replace with your actual API call
-      const response = await fetch('/api/chat', {
+      const response = await fetch('http://localhost:5000/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
