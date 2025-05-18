@@ -11,11 +11,10 @@ const ChatComponent = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom whenever messages change
-
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -79,16 +78,16 @@ const ChatComponent = () => {
   };
 
   return (
-    <Card className="flex flex-col h-full max-w-md mx-auto">
+    <Card className="flex flex-col  max-w-md mx-auto">
       {/* Chat header */}
       <div className="px-4 py-3 border-b">
         <h1 className="text-xl font-semibold text-center">AI Assistant</h1>
       </div>
 
       {/* Messages area */}
-      <ScrollArea className="flex-1 p-4">
+      <ScrollArea className="flex-1 p-4 h-auto">
         {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-muted-foreground">
+          <div className="flex items-center justify-center text-muted-foreground">
             <p>Start a conversation with the AI</p>
           </div>
         ) : (
